@@ -21,12 +21,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f1f80af1-2d32-419f-8ef4-e32cdab4da28" name="更改" comment="init">
-      <change afterPath="$PROJECT_DIR$/.idea/hello_cmake.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,7 +106,7 @@
       <workItem from="1689521054333" duration="5039000" />
       <workItem from="1689560623501" duration="4466000" />
       <workItem from="1689566506726" duration="45000" />
-      <workItem from="1689566559983" duration="791000" />
+      <workItem from="1689566559983" duration="844000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1689565963709</created>
@@ -120,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689565963709</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="init">
+      <created>1689571067879</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1689571067879</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
