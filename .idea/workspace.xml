@@ -20,8 +20,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f1f80af1-2d32-419f-8ef4-e32cdab4da28" name="更改" comment="init">
+    <list default="true" id="f1f80af1-2d32-419f-8ef4-e32cdab4da28" name="更改" comment="Modern CMake">
       <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -106,7 +107,7 @@
       <workItem from="1689521054333" duration="5039000" />
       <workItem from="1689560623501" duration="4466000" />
       <workItem from="1689566506726" duration="45000" />
-      <workItem from="1689566559983" duration="844000" />
+      <workItem from="1689566559983" duration="919000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1689565963709</created>
@@ -122,7 +123,14 @@
       <option name="project" value="LOCAL" />
       <updated>1689571067879</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Modern CMake">
+      <created>1689571136887</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1689571136887</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,7 +158,8 @@
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
     <MESSAGE value="init" />
-    <option name="LAST_COMMIT_MESSAGE" value="init" />
+    <MESSAGE value="Modern CMake" />
+    <option name="LAST_COMMIT_MESSAGE" value="Modern CMake" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
