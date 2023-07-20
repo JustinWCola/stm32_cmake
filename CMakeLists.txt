@@ -57,25 +57,21 @@ add_link_options(-T ${LINKER_SCRIPT})
 
 file(GLOB_RECURSE SOURCES "Core/*.*" "Drivers/*.*")
 
-add_executable(${PROJECT_NAME}.elf ${SOURCES} ${LINKER_SCRIPT})
+add_library(hal)
 
-target_compile_definitions(${PROJECT_NAME}.elf
-        PRIVATE
+target_sources(hal
+        PUBLIC
+            ${SOURCES}
+        )
+
+target_include_directories(hal
+        PUBLIC
+            Core/Inc Drivers/STM32F4xx_HAL_Driver/Inc Drivers/STM32F4xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F4xx/Include Drivers/CMSIS/Include
+        )
+
+target_compile_definitions(hal
+        PUBLIC
             -DDEBUG -DUSE_HAL_DRIVER -DSTM32F407xx
         )
 
-target_include_directories(${PROJECT_NAME}.elf
-        PRIVATE
-            Core/Inc Drivers/STM32F4xx_HAL_Driver/Inc Drivers/STM32F4xx_HAL_Driver/Inc/Legacy Drivers/CMSIS/Device/ST/STM32F4xx/Include Drivers/CMSIS/Include
-)
-
 add_subdirectory(User)
-
-set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
-set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
-
-add_custom_command(TARGET ${PROJECT_NAME}.elf POST_BUILD
-        COMMAND ${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:${PROJECT_NAME}.elf> ${HEX_FILE}
-        COMMAND ${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:${PROJECT_NAME}.elf> ${BIN_FILE}
-        COMMENT "Building ${HEX_FILE}
-Building ${BIN_FILE}")

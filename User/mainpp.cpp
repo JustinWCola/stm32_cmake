@@ -3,6 +3,9 @@
 //
 #include "main.h"
 #include "gpio.h"
+#include "led.h"
+
+cLed led;
 
 int main(void)
 {
@@ -37,7 +40,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+      led.rgbLoop();
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
