@@ -56,25 +56,21 @@ add_link_options(-T $${LINKER_SCRIPT})
 
 file(GLOB_RECURSE SOURCES ${sources})
 
-add_executable($${PROJECT_NAME}.elf $${SOURCES} $${LINKER_SCRIPT})
+add_library(hal)
 
-target_compile_definitions($${PROJECT_NAME}.elf
-        PRIVATE
+target_sources(hal
+        PUBLIC
+            ${SOURCES}
+        )
+
+target_include_directories(hal
+        PUBLIC
+            ${includes}
+        )
+
+target_compile_definitions(hal
+        PUBLIC
             ${defines}
         )
 
-target_include_directories($${PROJECT_NAME}.elf
-        PRIVATE
-            ${includes}
-)
-
 add_subdirectory(User)
-
-set(HEX_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.hex)
-set(BIN_FILE $${PROJECT_BINARY_DIR}/$${PROJECT_NAME}.bin)
-
-add_custom_command(TARGET $${PROJECT_NAME}.elf POST_BUILD
-        COMMAND $${CMAKE_OBJCOPY} -Oihex $<TARGET_FILE:$${PROJECT_NAME}.elf> $${HEX_FILE}
-        COMMAND $${CMAKE_OBJCOPY} -Obinary $<TARGET_FILE:$${PROJECT_NAME}.elf> $${BIN_FILE}
-        COMMENT "Building $${HEX_FILE}
-Building $${BIN_FILE}")
