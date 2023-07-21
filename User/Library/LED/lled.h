@@ -2,8 +2,8 @@
 // Created by JustinWCola on 2023/7/19.
 //
 
-#ifndef STM32_CMAKE_LED_H
-#define STM32_CMAKE_LED_H
+#ifndef STM32_CMAKE_LLED_H
+#define STM32_CMAKE_LLED_H
 
 #include <cstdint>
 #include "stm32f4xx_hal.h"
@@ -23,4 +23,4 @@ private:
     void rgbSet(uint32_t argb);
 };
 
-#endif //STM32_CMAKE_LED_H
+#endif //STM32_CMAKE_LLED_H

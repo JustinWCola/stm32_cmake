@@ -57,7 +57,7 @@ add_link_options(-T ${LINKER_SCRIPT})
 
 file(GLOB_RECURSE SOURCES "Core/*.*" "Drivers/*.*")
 
-add_library(hal)
+add_library(hal STATIC)
 
 target_sources(hal
         PUBLIC
