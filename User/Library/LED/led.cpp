@@ -4,8 +4,6 @@
 
 #include "led.h"
 
-#include "stm32f4xx_hal_gpio.h"
-
 #define RGB_FLOW_COLOR_CHANGE_TIME  500
 #define RGB_FLOW_COLOR_LENGHT       3
 
@@ -19,9 +17,17 @@ void cLed::rgbSet(uint32_t argb)
     green = ((argb & 0x0000FF00) >> 8) * alpha;
     blue = ((argb & 0x000000FF) >> 0) * alpha;
 
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_1, blue);
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_2, green);
-//    __HAL_TIM_SetCompare(&htim5, TIM_CHANNEL_3, red);
+    __HAL_TIM_SetCompare(rgb_tim, TIM_CHANNEL_1, blue);
+    __HAL_TIM_SetCompare(rgb_tim, TIM_CHANNEL_2, green);
+    __HAL_TIM_SetCompare(rgb_tim, TIM_CHANNEL_3, red);
+}
+
+void cLed::rgbInit(TIM_HandleTypeDef *tim)
+{
+    HAL_TIM_Base_Start(rgb_tim);
+    HAL_TIM_PWM_Start(rgb_tim, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(rgb_tim, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(rgb_tim, TIM_CHANNEL_3);
 }
 
 void cLed::rgbLoop()
@@ -68,5 +74,3 @@ void cLed::rgbLoop()
     rgbSet(argb);
     timer++;
 }
-
-
