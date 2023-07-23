@@ -17,5 +17,6 @@ int main(void)
     while (1)
     {
         led.rgbLoop();
+        HAL_Delay(1);
     }
 }
