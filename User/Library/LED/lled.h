@@ -6,8 +6,7 @@
 #define STM32_CMAKE_LLED_H
 
 #include <cstdint>
-#include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_gpio.h"
+#include "main.h"
 
 class cLed
 {
