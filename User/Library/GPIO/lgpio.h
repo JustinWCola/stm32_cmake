@@ -18,12 +18,12 @@ typedef enum
 class cGPIO
 {
 public:
-    cGPIO(GPIO_TypeDef* port, uint16_t pin):port(port), pin(pin){};
+    cGPIO(GPIO_TypeDef *port, uint16_t pin):port(port), pin(pin){};
     void set(uint8_t state);
     void get();
     void lock();
 private:
-    GPIO_TypeDef* port;
+    GPIO_TypeDef *port;
     uint16_t pin;
 };
 
