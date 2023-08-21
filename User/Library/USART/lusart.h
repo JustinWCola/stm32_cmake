@@ -17,21 +17,20 @@ typedef enum
 class cUsart
 {
 public:
-    cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, eUsartType type) :
-            local_huart(local_huart), buf_size(buf_size), type(type) {}
+    cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, eUsartType type, void (*rx_user_callback)());
 
-    void open();
-    void close();
+    void send(uint8_t *tx_buf, uint16_t tx_size);
     void rxCallback(UART_HandleTypeDef *huart);
-    void txCallback(UART_HandleTypeDef *huart);
-    void (*rxUserCallback)(){};
-    void (*txUserCallback)(){};
 
 private:
     UART_HandleTypeDef *local_huart{};
     eUsartType type;
     uint16_t buf_size;
     uint8_t rx_buf[255];
+
+    void open();
+    void close();
+    void (*rxUserCallback)(){};
 };
 
 #endif //STM32_CMAKE_LUSART_H
