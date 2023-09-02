@@ -12,6 +12,8 @@ target_link_libraries(${PROJECT_NAME}.elf
         PRIVATE
             hal
             led
+            usart
+            log
         )
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)

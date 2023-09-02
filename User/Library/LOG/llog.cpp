@@ -15,7 +15,7 @@ void cLog::info(const char *format, ...)
 {
     if(_log_level <= INFO)
     {
-        std::string tmp = std::string((const char*)"[INFO]:") + std::string(format);
+        std::string tmp = std::string((const char*)"[INFO]") + std::string(format) + std::string((const char*)"\r\n");
         usart_printf(tmp.c_str());
     }
 }
@@ -24,7 +24,7 @@ void cLog::warn(const char *format, ...)
 {
     if(_log_level <= WARN)
     {
-        std::string tmp = std::string((const char*)"[INFO]:") + std::string(format);
+        std::string tmp = std::string((const char*)"[WARN]") + std::string(format) + std::string((const char*)"\r\n");
         usart_printf(tmp.c_str());
     }
 }
@@ -33,7 +33,7 @@ void cLog::error(const char *format, ...)
 {
     if(_log_level <= ERROR)
     {
-        std::string tmp = std::string((const char*)"[INFO]:") + std::string(format);
+        std::string tmp = std::string((const char*)"[ERROR]") + std::string(format) + std::string((const char*)"\r\n");
         usart_printf(tmp.c_str());
     }
 }
