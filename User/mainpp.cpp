@@ -8,7 +8,7 @@
 #include "usart.h"
 #include "dma.h"
 
-#include "lled.h"
+#include "lrgb.h"
 #include "lusart.h"
 #include "llog.h"
 
@@ -20,7 +20,7 @@
 char debug_buf[DEBUG_RX_BUF_SIZE]{};
 void test_rxcallback();
 
-cUsart usart1(&huart1,255,cUsart::DMA_IDLE_IT,test_rxcallback);
+cUsart usart1(&huart1, 255, cUsart::IDLE, test_rxcallback);
 cLog usart_log(cLog::INFO);
 
 void test_rxcallback()
@@ -44,12 +44,12 @@ int main(void)
     MX_DMA_Init();
     MX_USART1_UART_Init();
 
-    cLed led(&htim5);
+    cRgb led(&htim5);
     usart1.init();
 
     while (1)
     {
-        led.rgbLoop();
+        led.loop();
         HAL_Delay(1);
     }
 }

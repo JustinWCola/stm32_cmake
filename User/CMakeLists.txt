@@ -11,7 +11,7 @@ target_sources(${PROJECT_NAME}.elf
 target_link_libraries(${PROJECT_NAME}.elf
         PRIVATE
             hal
-            led
+            rgb
             usart
             log
         )

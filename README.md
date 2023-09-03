@@ -587,7 +587,7 @@ User
   │  mainpp.cpp
   └─Library
       │  CMakeLists.txt
-      └─LED
+      └─RGB
               CMakeLists.txt
               lled.cpp
               lled.h
@@ -598,7 +598,7 @@ User
 - `User/Library/CMakeLists.txt`：
 
   ```cmake
-  add_subdirectory(LED)
+  add_subdirectory(RGB)
   ```
 
   只需要添加子目录即可。
@@ -655,10 +655,10 @@ int main(void)
     MX_GPIO_Init();
     MX_TIM5_Init();
 
-    cLed led(&htim5);
+    cRgb led(&htim5);
     while (1)
     {
-        led.rgbLoop();
+        led.loop();
     }
 }
 ```

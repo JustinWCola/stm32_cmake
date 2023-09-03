@@ -2,8 +2,8 @@
 // Created by JustinWCola on 2023/8/21.
 //
 
-#ifndef STM32_CMAKE_LLOG_H
-#define STM32_CMAKE_LLOG_H
+#ifndef LLOG_H
+#define LLOG_H
 
 #include "main.h"
 
@@ -27,4 +27,4 @@ private:
     eLogLevel _log_level;
 };
 
-#endif //STM32_CMAKE_LLOG_H
+#endif //LLOG_H

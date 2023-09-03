@@ -2,8 +2,8 @@
 // Created by JustinWCola on 2023/7/24.
 //
 
-#ifndef STM32_CMAKE_LUSART_H
-#define STM32_CMAKE_LUSART_H
+#ifndef LUSART_H
+#define LUSART_H
 
 #include <cstdint>
 #include "main.h"
@@ -13,10 +13,11 @@ class cUsart
 public:
     typedef enum
     {
-        DMA_IDLE_IT = 0,    //DMA空闲中断
-        DMA_CPLT_IT = 1     //DMA接收完成中断
+        IDLE = 0,    //DMA空闲中断
+        CPLT = 1     //DMA接收完成中断
     }eUsartType;
 
+    cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, void (*rx_user_callback)());
     cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, eUsartType type, void (*rx_user_callback)());
 
     void init();
@@ -26,12 +27,12 @@ public:
     uint8_t rx_buf[255];
 
 private:
-    UART_HandleTypeDef *local_huart{};
-    eUsartType type;
-    uint16_t buf_size;
+    UART_HandleTypeDef *_local_huart{};
+    eUsartType _type;
+    uint16_t _buf_size;
 
     void deinit();
     void (*rxUserCallback)(){};
 };
 
-#endif //STM32_CMAKE_LUSART_H
+#endif //LUSART_H

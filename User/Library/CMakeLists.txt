@@ -1,4 +1,5 @@
-add_subdirectory(LED)
+add_subdirectory(RGB)
 add_subdirectory(GPIO)
 add_subdirectory(USART)
 add_subdirectory(LOG)
+add_subdirectory(CAN)

@@ -42,7 +42,7 @@
   activated or not.
 
   [..]
-  In Output or Alternate mode, each IO can be configured on init-drain or push-pull
+  In Output or Alternate mode, each IO can be configured on open-drain or push-pull
   type and the IO speed can be selected depending on the VDD value.
 
   [..]  
