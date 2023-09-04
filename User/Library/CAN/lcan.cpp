@@ -9,11 +9,12 @@
 #define CAN_CNT_MAX 16
 
 static uint8_t can_cnt = 0;
-static cCan *can_list[CAN_CNT_MAX];
+static cCan *can_reg[CAN_CNT_MAX];
 
-cCan::cCan(CAN_HandleTypeDef *local_can, uint32_t tx_id, uint32_t rx_id, void (*rx_user_callback)()) : _local_can(local_can), _tx_id(tx_id), _rx_id(rx_id), rxUserCallback(rx_user_callback)
+cCan::cCan(CAN_HandleTypeDef *local_can, uint32_t tx_id, uint32_t tx_dlc, uint32_t rx_id, void (*rx_user_callback)(uint8_t *)) :
+        _local_can(local_can), _tx_id(tx_id), _tx_dlc(tx_dlc), _rx_id(rx_id), rxUserCallback(rx_user_callback)
 {
-    can_list[can_cnt++] = this;
+    can_reg[can_cnt++] = this;
 }
 
 void cCan::init()
@@ -28,9 +29,9 @@ void cCan::init()
     can_filter.FilterIdLow = 0x0000;
     can_filter.FilterMaskIdHigh = 0x0000;
     can_filter.FilterMaskIdLow = 0x0000;
-    can_filter.FilterBank = _local_can == &hcan1 ? (can1_filter_bank++) : (can2_filter_bank++); //这对吗
+    can_filter.FilterBank = ((_local_can == &hcan1) ? (can1_filter_bank++) : (can2_filter_bank++));
     can_filter.SlaveStartFilterBank = 14;
-    can_filter.FilterFIFOAssignment = CAN_RX_FIFO0;//要分奇偶吗
+    can_filter.FilterFIFOAssignment = ((_rx_id & 1) ? CAN_RX_FIFO0 : CAN_RX_FIFO1);
 
     HAL_CAN_ConfigFilter(_local_can, &can_filter);
 
@@ -49,7 +50,7 @@ void cCan::send(uint8_t *tx_buf)
     tx_header.IDE = _tx_ide;
     tx_header.RTR = _tx_rtr;
     tx_header.DLC = _tx_dlc;
-    memcpy(tx_buf, tx_data, _tx_dlc);
+    memcpy(tx_data, tx_buf, _tx_dlc);
 
     HAL_CAN_AddTxMessage(_local_can, &tx_header, tx_data, &tx_mailbox);
 }
@@ -63,14 +64,25 @@ void cCan::rxCallback(CAN_HandleTypeDef *hcan, CAN_RxHeaderTypeDef rx_header, ui
     }
 }
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+void CAN_RxFifoxMsgPendingCallback(CAN_HandleTypeDef *hcan, uint32_t fifox)
 {
     CAN_RxHeaderTypeDef rx_header;
     uint8_t rx_data[8];
-    HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, rx_data);
-
-    for (uint8_t i = 0; i < can_cnt; i++)
-        can_list[i]->rxCallback(hcan, rx_header, rx_data);
+    while (HAL_CAN_GetRxFifoFillLevel(hcan, fifox))
+    {
+        HAL_CAN_GetRxMessage(hcan, fifox, &rx_header, rx_data);
+        for (uint8_t i = 0; i < can_cnt; i++)
+            can_reg[i]->rxCallback(hcan, rx_header, rx_data);
+    }
 }
 
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+    CAN_RxFifoxMsgPendingCallback(hcan, CAN_RX_FIFO0);
+}
+
+void HAL_CAN_RxFifo1MsgPendingCallback(CAN_HandleTypeDef *hcan)
+{
+    CAN_RxFifoxMsgPendingCallback(hcan, CAN_RX_FIFO1);
+}
 

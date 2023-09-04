@@ -12,8 +12,9 @@ target_link_libraries(${PROJECT_NAME}.elf
         PRIVATE
             hal
             rgb
-            usart
             log
+            usart
+            can
         )
 
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)

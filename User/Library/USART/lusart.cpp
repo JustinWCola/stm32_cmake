@@ -2,39 +2,41 @@
 // Created by JustinWCola on 2023/7/24.
 //
 
+#include <cstdlib>
 #include "lusart.h"
 
 #define USART_CNT_MAX 6
 
 static uint8_t usart_cnt_idle = 0;
-static cUsart *usart_list_idle[USART_CNT_MAX];
+static cUsart *usart_reg_idle[USART_CNT_MAX];
 
 static uint8_t usart_cnt_cplt = 0;
-static cUsart *usart_list_cplt[USART_CNT_MAX];
+static cUsart *usart_reg_cplt[USART_CNT_MAX];
 
-cUsart::cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, void (*rx_user_callback)()) :
-        _local_huart(local_huart), _buf_size(buf_size), rxUserCallback(rx_user_callback)
+cUsart::cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, void (*rx_user_callback)(uint8_t *rx_buf)) :
+_local_huart(local_huart), _buf_size(buf_size), rxUserCallback(rx_user_callback)
 {
-    _type = IDLE;
-    usart_list_idle[usart_cnt_idle++] = this;
+    usart_reg_idle[usart_cnt_idle++] = this;
+    _rx_buf = (uint8_t *)malloc(_buf_size);
 }
 
-cUsart::cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, eUsartType type, void (*rx_user_callback)()) :
-        _local_huart(local_huart), _buf_size(buf_size), _type(type), rxUserCallback(rx_user_callback)
+cUsart::cUsart(UART_HandleTypeDef *local_huart, uint16_t buf_size, eUsartType type, void (*rx_user_callback)(uint8_t *rx_buf)) :
+_local_huart(local_huart), _buf_size(buf_size), _type(type), rxUserCallback(rx_user_callback)
 {
     if(type == IDLE)
-        usart_list_idle[usart_cnt_idle++] = this;
+        usart_reg_idle[usart_cnt_idle++] = this;
     else if(type == CPLT)
-        usart_list_cplt[usart_cnt_cplt++] = this;
+        usart_reg_cplt[usart_cnt_cplt++] = this;
+    _rx_buf = (uint8_t *)malloc(_buf_size);
 }
 
 ///串口类开启函数
 void cUsart::init()
 {
     if (_type == CPLT)
-        HAL_UART_Receive_DMA(_local_huart, rx_buf, _buf_size);
+        HAL_UART_Receive_DMA(_local_huart, _rx_buf, _buf_size);
     else if (_type == IDLE)
-        HAL_UARTEx_ReceiveToIdle_DMA(_local_huart, rx_buf, _buf_size);
+        HAL_UARTEx_ReceiveToIdle_DMA(_local_huart, _rx_buf, _buf_size);
     __HAL_DMA_DISABLE_IT(_local_huart->hdmarx, DMA_IT_HT);
 }
 
@@ -50,15 +52,15 @@ void cUsart::rxCallback(UART_HandleTypeDef *huart)
     if (huart == _local_huart)
     {
         deinit();
-        rxUserCallback();   //修改用户回调即可
+        rxUserCallback(_rx_buf);   //修改用户回调即可
         init();
     }
 }
 
 ///串口类发送函数
-void cUsart::send(uint8_t *tx_buf, uint16_t tx_size)
+void cUsart::send(uint8_t *tx_data, uint16_t tx_size)
 {
-    HAL_UART_Transmit_DMA(_local_huart, tx_buf, tx_size);
+    HAL_UART_Transmit_DMA(_local_huart, tx_data, tx_size);
 }
 
 /**
@@ -69,7 +71,7 @@ void cUsart::send(uint8_t *tx_buf, uint16_t tx_size)
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 {
     for (uint8_t i=0;i<usart_cnt_idle;i++)
-        usart_list_idle[i]->rxCallback(huart);
+        usart_reg_idle[i]->rxCallback(huart);
 }
 
 /**
@@ -79,5 +81,5 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
     for (uint8_t i=0;i<usart_cnt_cplt;i++)
-        usart_list_cplt[i]->rxCallback(huart);
+        usart_reg_cplt[i]->rxCallback(huart);
 }
